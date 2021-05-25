@@ -25,6 +25,7 @@ description: >-                        # used by seo meta and the atom feed
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://pizzcato.github.io'
 
+
 github:
   username: pizzcato             # change to your github username
 
@@ -163,3 +164,4 @@ jekyll-archives:
   permalinks:
     tag: /tags/:name/
     category: /categories/:name/
+

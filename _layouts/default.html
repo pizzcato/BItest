@@ -39,14 +39,18 @@ layout: compress
     {% endif %}
 
     <div id="mask"></div>
-
+<!-- 
     <a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button">
       <i class="fas fa-angle-up"></i>
+    </a> -->
+    <a id="rocket" href="#" aria-label="back-to-top" class="show" role="button">
+      <!-- <i class="fas fa-angle-up"></i> -->
     </a>
 
     {% include search-loader.html %}
     
     <!-- <script src="{{ '/public/js/tabs.js' | relative_url }}"></script> -->
+      <script src="{{ '/public/js/totop.js' | relative_url }}"></script>
   </body>
 
 </html>

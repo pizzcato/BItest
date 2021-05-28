@@ -3,7 +3,10 @@ layout: post
 title:  "Welcome to Jekyll!"
 date:   2021-05-15 10:47:15 +0800
 categories: jekyll update
+math: true
 ---
+
+
 测试一些乱七八糟的使用  
 does it works?
 
@@ -59,3 +62,19 @@ import random {% endihighlight %} at the top of your file.
   <i class="fas fa-spinner fa-pulse"></i>
   <i class="fas fa-stroopwafel fa-spin"></i>
 </div>
+
+Move to HTML please.
+
+*[HTML]: Hyper Text Markup Language
+
+paragraph1
+{: style="color:#bfa"}
+{% include codeHeader.html %}
+```xml
+{% include_relative  /file/PLAT_BACKGROUND.sld %}
+``` 
+
+{% include codeHeader.html %}
+```sql
+select 1+1=2;
+```

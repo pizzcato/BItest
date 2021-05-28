@@ -27,5 +27,38 @@ categories: [gis,geoserver]
 
 maxDisplacement表示在该范围内文字会自动寻找合适的位置显示  
 
+## 例子
+
+### 分级渲染
+
+{% include codeHeader.html %}
+
+```xml
+{% include_relative /file/level.sld %}
+```
+
+### 点类型+文字  
+
+{% include codeHeader.html %}
+
+```xml
+{% include_relative /file/PLAT_BACKGROUND.sld %}
+```  
+
+### 线类型+文字
+
+{% include codeHeader.html %}
+
+```xml
+{% include_relative /file/LINE_BACKGROUND.sld %}
+```  
+
+### 多边形类型模板  
+
+{% include codeHeader.html %}
+
+```xml
+{% include_relative /file/polygon_style.xml %}
+```  
 
 {% include imgaddclass.html %}

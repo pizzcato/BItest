@@ -3,7 +3,8 @@ layout: post
 title:  "Welcome to Jekyll!"
 date:   2021-05-15 10:47:15 +0800
 categories: jekyll update
-math: true
+math: true  
+mermaid: true
 ---
 
 
@@ -77,4 +78,12 @@ paragraph1
 {% include codeHeader.html %}
 ```sql
 select 1+1=2;
+```
+
+```mermaid
+pie title Pets adopted by volunteers
+  "Dogs" : 386
+  "Cats" : 85
+  "Rats" : 35
+  "Fishs" :100
 ```

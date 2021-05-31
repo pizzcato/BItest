@@ -2,7 +2,7 @@
 title: 制作概览/大屏等页面使用的geojson地图文件
 author: pizzcato
 date: 2021-05-25 10:57:41 +0800
-categories: [GIS]
+categories: [GIS,geojson]
 tag: [GIS]
 math: true
 ---

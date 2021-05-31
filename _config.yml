@@ -169,5 +169,12 @@ jekyll-archives:
 
 # plugins
 
+premonition:
+  types:
+    important:
+      meta:
+        fa-icon: fa-bell
+      
+
 plugins:
   - premonition

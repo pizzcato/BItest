@@ -2,7 +2,7 @@
 title: geoserver style配置
 author: pizzcato
 date: 2021-05-27 11:54:45  +0800
-categories: [gis,geoserver]
+categories: [GIS,geoserver]
 ---
 
 ## style显示文字

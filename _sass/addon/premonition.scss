@@ -1,10 +1,11 @@
-$default-color: #5bc0de;
+$default-color: #81C7D4;
 $default-light-color: #e3edf2;
 $info-color: #50af51;
 $info-light-color: #f3f8f3;
 $warning-color: #f0ad4e;
-$warning-light-color: #fcf8f2;
+$warning-light-color: hsl(36, 63%, 97%);
 $error-color: #d9534f;
+$error-important: #D0104C;
 $error-light-color: #fdf7f7;
 $content-color: rgba(0, 0, 0, 0.5);
 $citation-color: #495057;
@@ -81,6 +82,9 @@ $svg-citation-color: "495057";
     blockquote {
       border-left: 0;
     }
+  }
+  &.important {
+    @include box-type($error-important, $error-light-color);
   }
 
   .fa,

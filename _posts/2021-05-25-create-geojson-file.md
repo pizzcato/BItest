@@ -86,6 +86,7 @@ geojson的格式是比较固定的,所以可以通过拼接字符串的方式来
 
 例:  
 
+{% include codeHeader.html %}
 ```sql
 select
 area
@@ -122,6 +123,30 @@ area
 * string_agg:字符串聚合
   将多行字符串聚合
 
+### 拼接高铁高速使用的高铁线路/高速线路图
+
+> important "注意"
+> 其中相当于省份外框的name必须要和`zc_hst_summary_conf.js`中的`defaultMapName`配置项相同,才能将省份边框设置为背景图,无法选中
+
+{% include codeHeader.html %}
+
+```sql
+with t as (
+select 1 as type, name_cn as name, geom as geom from  cfg_province_info 
+where  province_name ='SHANXI'
+union all 
+select 2 ,road_name as name,st_buffer(geom,0.009)as geom from cfg_map_rail_shanxi
+)
+select 
+'{
+"type": "FeatureCollection",
+"name": "' || 'SHANXI_GAOTIE' || '",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [' || string_agg('{ "type": "Feature", "properties": '||case when type=2 then  '{ "name": "' || NAME ||'" }' else  '{ "name": "' || NAME || '","Kind":"2" }' end ||', "geometry":' ||
+ st_asgeojson( st_simplify(geom, 9e-3)), E'},\n' order by type )|| E'}\n' || E']\n}\n'
+from T
+```
+
 ## 进一步简化geojson文件
 
 * 页面所需的geojson文件是不需要任何换行和缩进的,如果geojson文件存在较多的缩进和换行,可以通过join line[^1]的方式来取消
@@ -135,3 +160,5 @@ area
   *不同编辑器的正则解析有些区别*
 
 [^1]: vscode可以F1在所有命令中搜索join lines;<br>也可以在网上搜索相关的在线工具,如[Merge Text Lines](https://www.browserling.com/tools/join-lines)
+
+{% include imgaddclass.html %}

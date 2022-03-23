@@ -79,34 +79,76 @@ pg_partition_tree('tdlte_mro_pnn_grid10_cell_day')
 {% include codeHeader.html %}  
 
 ```sql
-SELECT                                          
-'CREATE TABLE ' || relname || E'\n(\n' ||
+with ct as (
+SELECT
+      nmsp_parent.nspname AS parent_schema ,
+      parent.relname AS parent ,
+      nmsp_child.nspname AS child ,
+      child.relname AS child_schema
+  FROM
+      pg_inherits JOIN pg_class parent
+          ON pg_inherits.inhparent = parent.oid JOIN pg_class child
+          ON pg_inherits.inhrelid = child.oid JOIN pg_namespace nmsp_parent
+          ON nmsp_parent.oid = parent.relnamespace JOIN pg_namespace nmsp_child
+          ON nmsp_child.oid = child.relnamespace
+ ) ,
+ get_pk as (
+select distinct  
+   tc.constraint_name, tc.table_name, kcu.column_name, 
+   tc.is_deferrable,tc.initially_deferred,constraint_type
+ FROM
+   information_schema.table_constraints AS tc 
+   JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name
+   JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name
+   where  constraint_type='PRIMARY KEY'
+ )
+SELECT     
+'--drop table '||schamename||'.'|| relname || ';'||E'\n' ||
+'CREATE TABLE ' ||schamename||'.'|| relname || E'\n(\n' ||
 array_to_string(
   array_agg(
-    '    ' || column_name || ' ' ||  type || ' '|| not_null
+    '  "' || tabledefinition.column_name || '" ' ||  type || ' '|| not_null ||    ' ' || coalesce(constraint_type,' ')||' '||column_default order by attnum
   )
   , E',\n'
-) || E'\n);\n'
+) || E'\n);\n'||case when  max(constraint_type) is null then  coalesce(indexdef||';','') else '' end  ||E'\n'
 from
 (
+
+
 SELECT 
-  c.relname, a.attname AS column_name,
+  c.relname,c.schamename, a.attname AS column_name,pi.indexdef, a.attnum,
   pg_catalog.format_type(a.atttypid, a.atttypmod) as type,
   case 
     when a.attnotnull
   then 'NOT NULL' 
-  else 'NULL' 
-  END as not_null 
-FROM pg_class c,
-  pg_attribute a,
-  pg_type t
-  WHERE c.relname = 'cfg_scene_grid50'
-  AND a.attnum > 0
-  AND a.attrelid = c.oid
+  else '' 
+  END as not_null,
+  case when  pg_get_expr(pa.adbin,pa.adrelid	)  is not null then 'default '||pg_get_expr(pa.adbin,pa.adrelid	) else '' end as column_default
+FROM
+ (select pc.oid as oid2,pc.*,pn.nspname as schamename from pg_class pc, pg_namespace pn where pc.relnamespace=pn.oid  
+  and  pc.relname not in (select distinct child_schema from ct ) and  pc.relname !~~ 'rulr%' ) c left join pg_indexes pi on c.relname=pi.tablename
+,
+  pg_attribute a left join pg_attrdef pa on a.attrelid =pa.adrelid and a.attnum	  =pa.adnum,
+  pg_type t  
+    
+  where  a.attnum > 0
+  AND a.attrelid = c.oid2
   AND a.atttypid = t.oid
+  and c.relkind='r'
 ORDER BY a.attnum
-) as tabledefinition
-group by relname
+) as tabledefinition left join get_pk pk on  pk.table_name=tabledefinition.relname and  pk.column_name=tabledefinition.column_name
+group by schamename,relname,indexdef
 ```  
 
 ![image.png](https://i.loli.net/2021/05/28/n9aWzL1kF4Y2XJE.png)  
+
+
+## pg kill 进程
+
+```sql
+SELECT pg_terminate_backend(*pid*);
+```
+
+```sql
+select 'SELECT pg_terminate_backend('|| pid||');' from  pg_stat_activity where  query='SELECT 1'
+```  

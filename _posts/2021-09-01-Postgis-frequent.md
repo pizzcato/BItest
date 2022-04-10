@@ -29,8 +29,18 @@ select postgis_full_version() ;
 
 {% include imgaddclass.html %}
 
-
 ## 消除多边形内部孔洞(支持multipolygon)
+
+{% include codeHeader.html %}  
+
+```sql
+with  t as  (
+select split_part(TYPE_NAME,'-',1) as region_name,st_union(geom) geom from TABLE_XXX where city='%CITY%' and '%REGION_TYPE%'='3' and type='unit' group by 1),y as  (
+select  region_name, st_makepolygon( ST_ExteriorRing((st_dump(geom)).geom))  geom from t
+)
+select 'polygon',region_name,ST_Simplify(st_union(geom),9e-4) from y where '%REGION_TYPE%'='3'
+group by 1,2
+```
 
 ![图 2](https://s2.loli.net/2022/03/23/EtMZKvUH2wcjm6D.png)  
 

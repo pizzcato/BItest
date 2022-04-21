@@ -5,6 +5,7 @@ date: 2022-04-21 13:06:14  +0800
 categories: [GIS]
 tag: GIS
 math: true
+mermaid: true
 ---
 
 >使用于openlayers读取geoserver图片瓦片图层
@@ -103,7 +104,7 @@ def calXY_back(sx, sy, level):
 ### 请求
 
 URL模板:  
-`http://{ip}:{port}/geoserver/{workspace}/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={workspace}:{LAYERNAME}&TILED=true&STYLES={style}&VIEWPARAMS={viewparams}&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&BBOX={minx},{miny},{maxx},{maxy}
+`http://{ip}:{port}/geoserver/{workspace}/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={workspace}:{LAYERNAME}&TILED=true&STYLES={style}&VIEWPARAMS={viewparams}&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&BBOX={minx},{miny},{maxx},{maxy}`
 
 参数说明:
 
